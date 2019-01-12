@@ -26,7 +26,7 @@ public class MongoCollections {
     public MongoIterable<String> collections(){
         return getDatabase().listCollectionNames();
     }
-
+//
     private MongoDatabase getDatabase() {
         if(database==null){
             database=mongoClient.getDatabase("library");
