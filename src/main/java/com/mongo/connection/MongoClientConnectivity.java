@@ -21,4 +21,8 @@ public class MongoClientConnectivity {
         }
         mongoClient.close();
     }
+
+    public MongoClient getMongoClient() {
+        return mongoClient;
+    }
 }
