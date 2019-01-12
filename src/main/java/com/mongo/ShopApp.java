@@ -1,8 +1,14 @@
 package com.mongo;
 
 import com.mongo.connection.MongoClientConnectivity;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,43 +25,24 @@ public class ShopApp {
 
         MemberCardFactory membmerCardFactory = new MemberCardFactory();
 
-//        members.insertMany(Arrays.asList(
-//                membmerCardFactory.create(
-//                        new Document().append("name","Kacper").append("surname","Staszek"),
-//                        Arrays.asList("1","2")
-//                        ,"124551",
-//                        new SimpleDateFormat("dd/MM/yyyy").parse("03/07/2011"))
-//                ,
-//                membmerCardFactory.create(new Document().append("name","Marcin").append("surname","Staszek"),
-//                        Arrays.asList("2","3"),
-//                        "32455",
-//                        new SimpleDateFormat("dd/MM/yyyy").parse("22/08/2000"))
-//                , membmerCardFactory.create(new Document().append("name","Rafał").append("surname","Staszek"),
-//                        Arrays.asList("5","6"),
-//                        "3242455",
-//                        new SimpleDateFormat("dd/MM/yyyy").parse("20/02/2001"),
-//                        200)
-//                , membmerCardFactory.create(new Document().append("name","Kamil").append("surname","Staszek"),
+//        members.insertOne(membmerCardFactory.create(new Document().append("name","Kamil").append("surname","Staszek"),
 //                        Arrays.asList("1","4"),
 //                        "325455",
-//                        new SimpleDateFormat("dd/MM/yyyy").parse("20/8/2011"),true)
-//
-//
-//
-//        ));
+//                        new SimpleDateFormat("dd/MM/yyyy").parse("20/8/2011"),300));
 
+        Bson membersWithPenalties = Filters.exists("penalty");
+        Bson documentsWithPenalty = Filters.gt("penalty",200);
+
+        FindIterable<Document> documents = members.find(documentsWithPenalty).projection(Projections.fields(Projections.exclude("_id")));
+       for (Document d: documents){
+           System.out.println(d);
+       }
+       for (Document d: members.find(membersWithPenalties)){
+           System.out.println(d);
 
         for (Document book : books.find(new Document("author","J.R.R Tolkien"))){
             System.out.println(book);
         }
-
-
-
-
-//        for (Document existingBook: books.find()){
-//            System.out.println(existingBook);
-//        }
-
 
 
 
