@@ -1,15 +1,8 @@
 package com.mongo;
 
-import com.google.api.services.translate.Translate;
 import com.mongo.connection.MongoClientConnectivity;
-import com.mongodb.Block;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Updates;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.util.*;
 
@@ -24,7 +17,7 @@ public class ShopApp {
         MongoCollection<Document> membershipCard = collections.getCollection("members");
         MongoCollection<Document> books = collections.getCollection("books");
         BookFactory bookFactory = new BookFactory();
-        BookMongoCRUD mongoBooksCRUD = new BookMongoCRUD(books,bookFactory);
+        MongoCRUD mongoBooksCRUD = new BookMongoCRUD(books,bookFactory);
 //        Document document1 = bookFactory.create("test1", "test1", Arrays.asList("test1", "test1"));
 //        Document document2 = bookFactory.create("test1", "test1", Arrays.asList("test1", "test1"));
 
