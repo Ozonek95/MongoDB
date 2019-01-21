@@ -1,5 +1,6 @@
 package com.mongo;
 
+import com.google.api.services.translate.Translate;
 import com.mongo.connection.MongoClientConnectivity;
 import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
@@ -24,9 +25,18 @@ public class ShopApp {
         MongoCollection<Document> books = collections.getCollection("books");
         BookFactory bookFactory = new BookFactory();
         BookMongoCRUD mongoBooksCRUD = new BookMongoCRUD(books,bookFactory);
+//        Document document1 = bookFactory.create("test1", "test1", Arrays.asList("test1", "test1"));
+//        Document document2 = bookFactory.create("test1", "test1", Arrays.asList("test1", "test1"));
+
+
+      //  mongoBooksCRUD.addToDatabase(Arrays.asList(document1,document2));
+
+
 
          //mongoBooksCRUD.addToDatabase(bookFactory.create("TYTUŁ","Autor",Arrays.asList("1","3","4")));
         mongoBooksCRUD.updateOne("title","TYTUŁ","NOWY TYTUL");
+        mongoBooksCRUD.updateMany("author","test1","Test2");
+        mongoBooksCRUD.updateOne("title","test1","newParameter",Arrays.asList(1,2,3));
 
 //        books.insertMany(Arrays.asList(
 //                bookFactory.create("Jeden","Dwa",Arrays.asList("1","2")),

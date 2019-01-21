@@ -12,4 +12,16 @@ public class Book {
         this.author = author;
         this.categories = categories;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
 }
