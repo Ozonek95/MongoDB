@@ -9,20 +9,19 @@ import org.bson.Document;
 
 import java.util.List;
 
-public class BookMongoCRUD implements MongoCRUD {
+public class MemberCardCRUD implements MongoCRUD {
 
-    private MongoCollection<Document> collection;
-    private BookFactory bookFactory;
+    private MongoCollection collection;
+    private MemberCardFactory factory;
 
-    public BookMongoCRUD(MongoCollection<Document> collection) {
+    public MemberCardCRUD(MongoCollection collection, MemberCardFactory factory) {
         this.collection = collection;
+        this.factory = factory;
     }
 
-    public BookMongoCRUD(MongoCollection<Document> collection, BookFactory bookFactory) {
+    public MemberCardCRUD(MongoCollection collection) {
         this.collection = collection;
-        this.bookFactory = bookFactory;
     }
-
 
     @Override
     public void addToDatabase(Document document) {
@@ -35,23 +34,22 @@ public class BookMongoCRUD implements MongoCRUD {
     }
 
     @Override
-    public void updateOne(String parameter,  Object valueBefore, Object newValue) {
+    public void updateOne(String parameter, Object valueBefore, Object newValue) {
         collection.updateOne(Filters.eq(parameter,valueBefore),Updates.set(parameter,newValue));
     }
+
     @Override
-    public void updateOne(String parameter, Object parameterValue, String newParameter, Object newParameterValue){
+    public void updateOne(String parameter, Object parameterValue, String newParameter, Object newParameterValue) {
         collection.updateOne(Filters.eq(parameter,parameterValue),Updates.set(newParameter,newParameterValue));
     }
 
     @Override
     public void updateMany(String parameter, Object valueBefore, Object newValue) {
-
         collection.updateMany(Filters.eq(parameter,valueBefore),Updates.set(parameter,newValue));
     }
 
     @Override
-    public void updateMany(String parameter, Object parameterValue, String newParameterName, Object newParameterValue ) {
-
+    public void updateMany(String parameter, Object parameterValue, String newParameterName, Object newParameterValue) {
         collection.updateMany(Filters.eq(parameter,parameterValue),Updates.set(newParameterName,newParameterValue));
     }
 
@@ -62,28 +60,24 @@ public class BookMongoCRUD implements MongoCRUD {
 
     @Override
     public void deleteMany(String parameter, Object parameterValue) {
-
         collection.deleteMany(Filters.eq(parameter,parameterValue));
     }
 
-    @Override
-    public FindIterable showByParameters(List<String> parameters, boolean id) {
+    public void addToDatabase(MemberCard memberCard){
+        Document document = factory.create(new Document
+                (memberCard.getPerson().getName(),
+                        memberCard.getPerson().getSurname()),
+                        memberCard.getBooks(),
+                        memberCard.getNumber(),
+                        memberCard.getDate());
+        collection.insertOne(document);
+    }
+
+    public FindIterable showByParameters(List<String> parameters, boolean id){
         if(id) {
             return collection.find().projection(Projections.fields(Projections.include(parameters)));
         }
         else return collection.find().projection(Projections.fields(Projections.include(parameters),Projections.exclude("_id")));
     }
-
-    public void addToDatabase(String title,String author, List<String> categories){
-        Document book = bookFactory.create(title, author, categories);
-        collection.insertOne(book);
-    }
-
-    public void addToDatabase(Book book){
-        Document bookDocument = bookFactory.create(book.getTitle(),book.getAuthor(),book.getCategories());
-        collection.insertOne(bookDocument);
-    }
-
-
 
 }

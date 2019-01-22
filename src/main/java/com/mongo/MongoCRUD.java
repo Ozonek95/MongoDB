@@ -1,5 +1,6 @@
 package com.mongo;
 
+import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface MongoCRUD {
 
     void updateOne(String parameter, Object valueBefore, Object newValue);
 
-    void updateOne(String parametr, Object parameterValue, String newParameter, Object newParameterValue);
+    void updateOne(String parameter, Object parameterValue, String newParameter, Object newParameterValue);
 
     void updateMany(String parameter, Object valueBefore, Object newValue);
 
@@ -20,5 +21,7 @@ public interface MongoCRUD {
     void deleteOne(String parameter, Object parameterValue);
 
     void deleteMany(String parameter, Object parameterValue);
+
+    FindIterable showByParameters(List<String> parameters, boolean id);
 
 }
